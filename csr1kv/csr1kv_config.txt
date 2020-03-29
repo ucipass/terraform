@@ -1,0 +1,9 @@
+hostname="csr1kv-1"
+mgmt-ipv4-gateway="dhcp"
+domain-name="cisco.com"
+license="security"
+ios-config-1="username cisco priv 15 pass cisco"
+ios-config-2="interface GigabitEthernet2"
+ios-config-3=" ip address dhcp"
+ios-config-4=" no shutdown"
+
