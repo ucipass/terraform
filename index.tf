@@ -18,15 +18,15 @@ module "ubuntu1" {
   security_group_id = module.vpc1.SSH_ICMP
 }
 
-module "csr1kv" {
-  source = "./csr1kv"
-  instance_name = "CSR1KV-1"
-  subnet_id1 = "${module.vpc1.SUBNET10}"
-  private_ip1 = "10.1.10.251"
-  subnet_id2 = "${module.vpc1.SUBNET11}"
-  private_ip2 = "10.1.11.251"
-  security_group_id = module.vpc1.SSH_ICMP
-}
+# module "csr1kv" {
+#   source = "./csr1kv"
+#   instance_name = "CSR1KV-1"
+#   subnet_id1 = "${module.vpc1.SUBNET10}"
+#   private_ip1 = "10.1.10.251"
+#   subnet_id2 = "${module.vpc1.SUBNET11}"
+#   private_ip2 = "10.1.11.251"
+#   security_group_id = module.vpc1.SSH_ICMP
+# }
 
 ####################################################
 # In case we need resources in another region
