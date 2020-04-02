@@ -11,12 +11,12 @@ module "vpc1" {
   vpc_cidr = "10.1.0.0/16"
 }
 
-module "ubuntu1" {
-  source = "./ubuntu"
-  instance_name = "AAVPC1-UB1"
-  subnet_id = "${module.vpc1.SUBNET10}"
-  security_group_id = module.vpc1.SSH_ICMP
-}
+# module "ubuntu1" {
+#   source = "./ubuntu"
+#   instance_name = "AAVPC1-UB1"
+#   subnet_id = "${module.vpc1.SUBNET10}"
+#   security_group_id = module.vpc1.SSH_ICMP
+# }
 
 # module "csr1kv" {
 #   source = "./csr1kv"
