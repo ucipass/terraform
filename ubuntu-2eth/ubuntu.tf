@@ -1,4 +1,14 @@
-variable "instance_name" {
+variable "HOST" {
+  type = string
+  default = "ub1.aws"
+}
+
+variable "DOMAIN" {
+  type = string
+  default = "cooltest.site"
+}
+
+variable "DYNDNSPASS" {
   type = string
 }
 
@@ -24,18 +34,13 @@ variable "domain" {
   default = "cooltest.site"
 }
 
-variable "host" {
-  type = string
-  default = "ub1.aws"
-}
-
 data "aws_ami" "ubuntu" {
   most_recent = true
   owners = ["099720109477"] # Canonical
 
   filter {
     name = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu*18.04*amd64*server*"]
+    values = ["ubuntu/images/hvm-ssd/ubuntu*20.04*amd64*server*"]
   }
 }
 
@@ -61,7 +66,7 @@ resource "aws_network_interface" "eth2" {
 }
 
 resource "aws_instance" "EC2_1" {
-  tags = { Name = var.instance_name }
+  tags = { Name = var.HOST }
   ami  = data.aws_ami.ubuntu.id
   instance_type = "t2.micro"
   key_name = var.key_name
@@ -76,7 +81,7 @@ resource "aws_instance" "EC2_1" {
     device_index         = 1
   }
 
-  user_data = templatefile( "${path.module}/init.sh", { host = "ub1.aws", domain = "cooltest.site", password = "00d6280382644f2fa7b73c3f01da72c6" } )
+  user_data = templatefile( "${path.module}/init.sh", { host = "${var.HOST}", domain = "${var.DOMAIN}", password = "${var.DYNDNSPASS}" } )
   provisioner "local-exec" {
     command = "echo Public IP ${aws_instance.EC2_1.public_ip}"
   }
