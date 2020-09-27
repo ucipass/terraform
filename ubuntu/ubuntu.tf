@@ -10,6 +10,11 @@ variable "security_group_id" {
   type = string
 }
 
+variable "key_name" {
+  type = string
+  default = "AA"
+}
+
 data "aws_ami" "ubuntu" {
   most_recent = true
   owners = ["099720109477"] # Canonical
@@ -20,20 +25,16 @@ data "aws_ami" "ubuntu" {
   }
 }
 
-resource "aws_instance" "EC2_1" {
-  ami           = "${data.aws_ami.ubuntu.id}"
-  instance_type = "t2.micro"
-  # vpc_security_group_ids = ["${aws_security_group.allow_ssh_icmp.id}"]
-  # subnet_id="${aws_subnet.AAVPC_SUBNET1.id}"
-  vpc_security_group_ids = ["${var.security_group_id}"]
-  subnet_id="${var.subnet_id}"
-  key_name = "AA-TEST"
-  
-  tags = {
-    Name = var.instance_name
-  }
 
-  # user_data = "${file("./script.sh")}"
+resource "aws_instance" "EC2_1" {
+  tags = { Name = var.instance_name }
+  ami  = data.aws_ami.ubuntu.id
+  instance_type = "t2.micro"
+  key_name = var.key_name
+  vpc_security_group_ids = [var.security_group_id]
+  subnet_id = var.subnet_id
+
+  # user_data = file("./script.sh")
   # provisioner "remote-exec" {
   #   inline = [ "cloud-init status --wait" ]
   # }
@@ -41,5 +42,5 @@ resource "aws_instance" "EC2_1" {
 }
 
 output "IP" {
-  value = "${aws_instance.EC2_1.public_ip}"
+  value = aws_instance.EC2_1.public_ip
 }

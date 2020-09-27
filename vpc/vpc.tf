@@ -20,7 +20,7 @@ resource "aws_vpc" "AAVPC" {
 }
 
 resource "aws_default_route_table" "RT_DEFAULT" {
-  default_route_table_id = "${aws_vpc.AAVPC.default_route_table_id}"
+  default_route_table_id = aws_vpc.AAVPC.default_route_table_id
 
   tags = {
     Name = format("%s_%s",var.vpc_name,"RT_DEFAULT")
@@ -28,7 +28,7 @@ resource "aws_default_route_table" "RT_DEFAULT" {
 }
 
 resource "aws_internet_gateway" "IGW" {
-  vpc_id = "${aws_vpc.AAVPC.id}"
+  vpc_id = aws_vpc.AAVPC.id
 
   tags = {
     Name = format("%s_%s",var.vpc_name,"IGW")
@@ -36,11 +36,11 @@ resource "aws_internet_gateway" "IGW" {
 }
 
 resource "aws_route_table" "RT_PUBLIC" {
-  vpc_id = "${aws_vpc.AAVPC.id}"
+  vpc_id = aws_vpc.AAVPC.id
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = "${aws_internet_gateway.IGW.id}"
+    gateway_id = aws_internet_gateway.IGW.id
   }
 
   tags = {
@@ -49,7 +49,7 @@ resource "aws_route_table" "RT_PUBLIC" {
 }
 
 resource "aws_route_table" "RT_PRIVATE" {
-  vpc_id = "${aws_vpc.AAVPC.id}"
+  vpc_id = aws_vpc.AAVPC.id
 
   tags = {
     Name = format("%s_%s",var.vpc_name,"RT_PRIVATE")
@@ -57,9 +57,9 @@ resource "aws_route_table" "RT_PRIVATE" {
 }
 
 resource "aws_subnet" "SUBNET10" {
-  vpc_id     = "${aws_vpc.AAVPC.id}"
+  vpc_id     = aws_vpc.AAVPC.id
   cidr_block = format("%s%s", trimsuffix(var.vpc_cidr,"0.0/16") ,"10.0/24")
-  availability_zone= "${data.aws_availability_zones.available.names[0]}"
+  availability_zone= data.aws_availability_zones.available.names[0]
   map_public_ip_on_launch = true
 
   tags = {
@@ -73,9 +73,9 @@ resource "aws_route_table_association" "RT_ASSOC_VPC_SUBNET10" {
 }
 
 resource "aws_subnet" "SUBNET20" {
-  vpc_id     = "${aws_vpc.AAVPC.id}"
+  vpc_id     = aws_vpc.AAVPC.id
   cidr_block = format("%s%s", trimsuffix(var.vpc_cidr,"0.0/16") ,"20.0/24")
-  availability_zone= "${data.aws_availability_zones.available.names[1]}"
+  availability_zone= data.aws_availability_zones.available.names[1]
   map_public_ip_on_launch = true
 
   tags = {
@@ -89,9 +89,9 @@ resource "aws_route_table_association" "RT_ASSOC_VPC_SUBNET20" {
 }
 
 resource "aws_subnet" "SUBNET11" {
-  vpc_id     = "${aws_vpc.AAVPC.id}"
+  vpc_id     = aws_vpc.AAVPC.id
   cidr_block = format("%s%s", trimsuffix(var.vpc_cidr,"0.0/16") ,"11.0/24")
-  availability_zone= "${data.aws_availability_zones.available.names[0]}"
+  availability_zone= data.aws_availability_zones.available.names[0]
   map_public_ip_on_launch = false
 
   tags = {
@@ -105,9 +105,9 @@ resource "aws_route_table_association" "RT_ASSOC_VPC_SUBNET11" {
 }
 
 resource "aws_subnet" "SUBNET12" {
-  vpc_id     = "${aws_vpc.AAVPC.id}"
+  vpc_id     = aws_vpc.AAVPC.id
   cidr_block = format("%s%s", trimsuffix(var.vpc_cidr,"0.0/16") ,"12.0/24")
-  availability_zone= "${data.aws_availability_zones.available.names[0]}"
+  availability_zone= data.aws_availability_zones.available.names[0]
   map_public_ip_on_launch = false
 
   tags = {
@@ -121,9 +121,9 @@ resource "aws_route_table_association" "RT_ASSOC_VPC_SUBNET12" {
 }
 
 resource "aws_subnet" "SUBNET21" {
-  vpc_id     = "${aws_vpc.AAVPC.id}"
+  vpc_id     = aws_vpc.AAVPC.id
   cidr_block = format("%s%s", trimsuffix(var.vpc_cidr,"0.0/16") ,"21.0/24")
-  availability_zone= "${data.aws_availability_zones.available.names[1]}"
+  availability_zone= data.aws_availability_zones.available.names[1]
   map_public_ip_on_launch = false
 
   tags = {
@@ -137,9 +137,9 @@ resource "aws_route_table_association" "RT_ASSOC_VPC_SUBNET21" {
 }
 
 resource "aws_subnet" "SUBNET22" {
-  vpc_id     = "${aws_vpc.AAVPC.id}"
+  vpc_id     = aws_vpc.AAVPC.id
   cidr_block = format("%s%s", trimsuffix(var.vpc_cidr,"0.0/16") ,"22.0/24")
-  availability_zone= "${data.aws_availability_zones.available.names[0]}"
+  availability_zone= data.aws_availability_zones.available.names[0]
   map_public_ip_on_launch = false
 
   tags = {
@@ -155,7 +155,7 @@ resource "aws_route_table_association" "RT_ASSOC_VPC_SUBNET22" {
 resource "aws_security_group" "SSH_ICMP" {
   name        = "allow_ssh"
   description = "Allow ssh traffic"
-  vpc_id      = "${aws_vpc.AAVPC.id}"
+  vpc_id      = aws_vpc.AAVPC.id
 
   ingress {
     description = "Allow SSH"
@@ -188,23 +188,23 @@ resource "aws_security_group" "SSH_ICMP" {
 
 
 output "SSH_ICMP" {
-  value = "${aws_security_group.SSH_ICMP.id}"
+  value = aws_security_group.SSH_ICMP.id
 }
 output "SUBNET10" {
-  value = "${aws_subnet.SUBNET10.id}"
+  value = aws_subnet.SUBNET10.id
 }
 output "SUBNET11" {
-  value = "${aws_subnet.SUBNET11.id}"
+  value = aws_subnet.SUBNET11.id
 }
 output "SUBNET12" {
-  value = "${aws_subnet.SUBNET12.id}"
+  value = aws_subnet.SUBNET12.id
 }
 output "SUBNET20" {
-  value = "${aws_subnet.SUBNET20.id}"
+  value = aws_subnet.SUBNET20.id
 }
 output "SUBNET21" {
-  value = "${aws_subnet.SUBNET21.id}"
+  value = aws_subnet.SUBNET21.id
 }
 output "SUBNET22" {
-  value = "${aws_subnet.SUBNET22.id}"
+  value = aws_subnet.SUBNET22.id
 }
