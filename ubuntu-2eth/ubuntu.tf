@@ -19,6 +19,16 @@ variable "key_name" {
   default = "AA"
 }
 
+variable "domain" {
+  type = string
+  default = "cooltest.site"
+}
+
+variable "host" {
+  type = string
+  default = "ub1.aws"
+}
+
 data "aws_ami" "ubuntu" {
   most_recent = true
   owners = ["099720109477"] # Canonical
@@ -66,8 +76,10 @@ resource "aws_instance" "EC2_1" {
     device_index         = 1
   }
 
-
-  # user_data = file("./script.sh")
+  user_data = templatefile( "${path.module}/init.sh", { host = "ub1.aws", domain = "cooltest.site", password = "00d6280382644f2fa7b73c3f01da72c6" } )
+  provisioner "local-exec" {
+    command = "echo Public IP ${aws_instance.EC2_1.public_ip}"
+  }
   # provisioner "remote-exec" {
   #   inline = [ "cloud-init status --wait" ]
   # }
