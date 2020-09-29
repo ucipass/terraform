@@ -16,7 +16,7 @@ module "ubuntu-2eth" {
   HOST = "aws"
   DOMAIN = "arato.biz"
   DYNDNSPASS = var.DYNDNSPASS
-  key_name = "AA"
+  key_name = var.EC2_KEY
   subnet_public_id = module.vpc1.SUBNET10
   subnet_private_id = module.vpc1.SUBNET11
   security_group_id = module.vpc1.SSH_ICMP_WEB_IPERF
