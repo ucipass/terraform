@@ -1,0 +1,30 @@
+---
+- hosts: ubuntu
+  gather_facts: False  
+  vars:
+    # ansible_user: ubuntu
+    # ansible_ssh_pass: blabla
+    ansible_python_interpreter: auto
+  - name: Update Aptitude
+    become: yes
+    apt:
+      name: aptitude 
+  - name: Update and Upgrade Existing Packages
+    become: yes
+    apt:
+      upgrade: 'yes'
+      update_cache: 'yes'
+      cache_valid_time: 3600
+  - name: Install a list of packages
+    become: yes
+    apt:
+      name: "{{ packages }}"
+    vars:
+      packages:
+      - curl
+      - iperf
+      - iperf3
+      - nmap
+      - net-tools
+      - traceroute
+      - nginx

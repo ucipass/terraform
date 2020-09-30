@@ -1,0 +1,4 @@
+[ubuntu]
+awshost1.cooltest.site
+[ubuntu:vars]
+ansible_user=ubuntu
