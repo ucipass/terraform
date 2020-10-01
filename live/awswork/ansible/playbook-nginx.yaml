@@ -1,0 +1,102 @@
+---
+- hosts: ubuntu
+  gather_facts: False  
+  vars:
+    # ansible_user: ubuntu
+    # ansible_ssh_pass: blabla
+    ansible_python_interpreter: auto
+    website_name: awshost1.cooltest.site
+  tasks:
+  - name: Update apt repo and cache on all Debian/Ubuntu boxes
+    become: yes
+    apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
+  - name: Install nginx and certbot
+    become: yes
+    apt:
+      name: "{{ packages }}"
+    vars:
+      packages:
+      - nginx
+      - certbot
+  - name: Create Directory Structure
+    become: yes
+    file:
+      path: /var/www/{{website_name}}
+      state: directory
+      # owner: www-data
+      # group: www-data
+      mode: 0775
+  - name: Create index.html homepage for {{website_name}}
+    become: yes
+    copy:
+      content: |
+        <html>
+          <head>
+            <title>{{website_name}}</title>
+          </head>
+          <body>
+            <center><h1>Welcome to {{website_name}}</h1></center>
+          </body>
+        </html>        
+      dest: /var/www/{{website_name}}/index.html
+      force: yes
+      mode: 0644
+  - name: Create nginx config file
+    become: yes
+    copy:
+      content: |
+        server {
+          server_name {{website_name}};
+          listen   80; ## listen for ipv4; this line is default and implied
+          root /var/www/{{website_name}}/ ;
+          index index.html index.htm;
+
+          location / {
+                  try_files $uri $uri/ =404;
+          }          
+        }
+      dest: /etc/nginx/sites-available/{{website_name}}
+      force: yes
+      mode: 0644
+  - name: Create nginx config file symbolic link
+    become: yes
+    file:
+      src: "/etc/nginx/sites-available/{{website_name}}"
+      dest: "/etc/nginx/sites-enabled/{{website_name}}"
+      state: link
+  - name: Make sure a nginx is running
+    become: yes
+    systemd:
+      state: restarted
+      name: nginx
+  - name: Get letsencrypt certificate for {{website_name}}
+    become: yes
+    command: certbot certonly --noninteractive --webroot --agree-tos --register-unsafely-without-email -d {{website_name}} -w /var/www/{{website_name}}
+    register: result
+  - name: Insert/Update SSL configuration block
+    become: yes
+    blockinfile:
+      path: /etc/nginx/sites-available/{{website_name}}
+      block: |
+        server {
+          server_name {{website_name}};
+          listen  443 ssl; 
+
+          ssl_certificate /etc/letsencrypt/live/{{website_name}}/fullchain.pem;
+          ssl_certificate_key /etc/letsencrypt/live/{{website_name}}/privkey.pem;
+          ssl_protocols TLSv1.2;
+          ssl_ciphers "HIGH:!aNULL:!MD5 or HIGH:!aNULL:!MD5:!3DES";
+          ssl_prefer_server_ciphers on;
+          
+          root /var/www/{{website_name}}/ ;
+          index index.html index.htm;
+          location / {
+            try_files $uri $uri/ =404;
+          }   
+
+        }
+  - name: Make sure a nginx is running
+    become: yes
+    systemd:
+      state: restarted
+      name: nginx
