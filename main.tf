@@ -28,6 +28,7 @@ module "vpc" {
 }
 
 module "vote_service_sg" {
+  depends_on = [module.vpc]
   source = "terraform-aws-modules/security-group/aws"
 
   name        = "user-service"
