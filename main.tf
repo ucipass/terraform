@@ -2,22 +2,8 @@ provider "aws" {
   region = var.AWS_REGION
 }
 
-module "ec2_cluster" {
-  source                 = "terraform-aws-modules/ec2-instance/aws"
-  version                = "~> 2.0"
-
-  name                   = "my-cluster"
-  instance_count         = 1
-
-  ami                    = "ami-ebd02392"
-  instance_type          = "t2.micro"
-  key_name               = "user1"
-  monitoring             = true
-  vpc_security_group_ids = ["sg-12345678"]
-  subnet_id              = "subnet-eddcdzz4"
-
-  tags = {
-    Terraform   = "true"
-    Environment = "dev"
-  }
+module "vpc1" {
+  source = "./modules/vpc"
+  vpc_name = var.VPC_NAME
+  vpc_cidr = var.VPC_CIDR
 }
