@@ -186,9 +186,94 @@ resource "aws_security_group" "SSH_ICMP" {
 
 }
 
+resource "aws_security_group" "SSH_ICMP_WEB_IPERF" {
+  name        = "allow_ssh_icmp_web_iperf"
+  description = "Allow ssh traffic"
+  vpc_id      = aws_vpc.AAVPC.id
+
+  ingress {
+    description = "Allow SSH"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "Allow HTTP"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "Allow HTTPS"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "Allow IPERF"
+    from_port   = 5001
+    to_port     = 5001
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "Allow IPERF3"
+    from_port   = 5201
+    to_port     = 5201
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "Allow IPERF_UDP"
+    from_port   = 5001
+    to_port     = 5001
+    protocol    = "udp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "Allow IPERF3_UDP"
+    from_port   = 5201
+    to_port     = 5201
+    protocol    = "udp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "Allow ICMP"
+    from_port   = -1
+    to_port     = -1
+    protocol    = "icmp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = format("%s_%s",var.vpc_name,"SSH_ICMP")
+  }
+
+}
+
 
 output "SSH_ICMP" {
   value = aws_security_group.SSH_ICMP.id
+}
+output "SSH_ICMP_WEB_IPERF" {
+  value = aws_security_group.SSH_ICMP_WEB_IPERF.id
 }
 output "SUBNET10" {
   value = aws_subnet.SUBNET10.id

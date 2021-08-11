@@ -4,7 +4,7 @@ variable "AWS_REGION" {
 }
 
 variable "VPC_NAME" {
-  default="VPC1"
+  default="VPC1112"
   type = string
 }
 
