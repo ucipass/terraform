@@ -1,3 +1,3 @@
-output "SSH_ICMP" {
-  value = "TEST"
+output "vpc" {
+  value = module.vpc
 }
