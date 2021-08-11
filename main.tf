@@ -7,7 +7,7 @@ module "ec2_cluster" {
   version                = "~> 2.0"
 
   name                   = "my-cluster"
-  instance_count         = 5
+  instance_count         = 1
 
   ami                    = "ami-ebd02392"
   instance_type          = "t2.micro"
