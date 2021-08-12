@@ -31,7 +31,7 @@ module "vote_service_sg" {
   depends_on = [module.vpc]
   source = "terraform-aws-modules/security-group/aws"
 
-  name        = "user-service"
+  name        = "user-service2"
   description = "Security group for user-service with custom ports open within VPC, and PostgreSQL publicly open"
   vpc_id      = module.vpc.vpc_id
 
