@@ -58,7 +58,7 @@ module "ec2_cluster" {
   version                = "~> 2.0"
 
   name                   = "my-cluster"
-  instance_count         = 1
+  instance_count         = 2
 
   ami                    = "ami-0279406e0655775be" 
   instance_type          = "t2.micro"
@@ -79,6 +79,7 @@ module "ec2_cluster" {
 module "records" {
   source  = "terraform-aws-modules/route53/aws//modules/records"
   version = "~> 2.0"
+  count = length(module.ec2_cluster.public_ip)
   zone_name = "aws.cooltest.site"
 
   records = [
@@ -87,7 +88,7 @@ module "records" {
       type    = "A"
       ttl     = 3600
       records = [
-        module.ec2_cluster.public_ip[0],
+        module.ec2_cluster.public_ip[count.index],
       ]
     },
   ]
