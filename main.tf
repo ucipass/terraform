@@ -79,7 +79,7 @@ module "ec2_cluster" {
 module "records" {
   source  = "terraform-aws-modules/route53/aws//modules/records"
   version = "~> 2.0"
-  count = length(module.ec2_cluster.public_ip)
+  count = 2 
   zone_name = "aws.cooltest.site"
 
   records = [
