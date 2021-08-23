@@ -66,8 +66,8 @@ module "ec2_cluster" {
   monitoring             = true
   vpc_security_group_ids = [module.custom_sg.security_group_id]
   subnet_id              = module.vpc.private_subnets[0]
-  associate_public_ip_address = yes
-  
+  associate_public_ip_address = true
+
   tags = {
     Terraform   = "true"
     Environment = "dev"
