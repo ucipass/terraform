@@ -77,7 +77,7 @@ module "ec2_cluster" {
 
 
 module "records" {
-  depends_on = [ec2_cluster]
+  depends_on = [module.ec2_cluster]
   source  = "terraform-aws-modules/route53/aws//modules/records"
   version = "~> 2.0"
   count = 2 
