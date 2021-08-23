@@ -34,7 +34,7 @@ module "custom_sg" {
   name        = "AA_EC2_SG"
   description = "Security group for user-service with custom ports open within VPC, and PostgreSQL publicly open"
   vpc_id      = module.vpc.vpc_id
-  associate_public_ip_address = yes
+
   ingress_cidr_blocks      = ["10.0.0.0/16"]
   ingress_rules            = ["https-443-tcp"]
   ingress_with_cidr_blocks = [
@@ -66,7 +66,8 @@ module "ec2_cluster" {
   monitoring             = true
   vpc_security_group_ids = [module.custom_sg.security_group_id]
   subnet_id              = module.vpc.private_subnets[0]
-
+  associate_public_ip_address = yes
+  
   tags = {
     Terraform   = "true"
     Environment = "dev"
