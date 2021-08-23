@@ -34,7 +34,7 @@ module "custom_sg" {
   name        = "AA_EC2_SG"
   description = "Security group for user-service with custom ports open within VPC, and PostgreSQL publicly open"
   vpc_id      = module.vpc.vpc_id
-
+  associate_public_ip_address = yes
   ingress_cidr_blocks      = ["10.0.0.0/16"]
   ingress_rules            = ["https-443-tcp"]
   ingress_with_cidr_blocks = [
@@ -78,7 +78,6 @@ module "ec2_cluster" {
 module "records" {
   source  = "terraform-aws-modules/route53/aws//modules/records"
   version = "~> 2.0"
-
   zone_name = "aws.cooltest.site"
 
   records = [
