@@ -27,7 +27,7 @@ module "vpc" {
   }
 }
 
-module "vote_service_sg" {
+module "custom_sg" {
   depends_on = [module.vpc]
   source = "terraform-aws-modules/security-group/aws"
 
@@ -64,8 +64,7 @@ module "ec2_cluster" {
   instance_type          = "t2.micro"
   key_name               = "AA"
   monitoring             = true
-  # vpc_security_group_ids = [module.vote_service_sg.security_group_id]
-  # subnet_id              = "subnet-eddcdzz4"
+  vpc_security_group_ids = [module.custom_sg.security_group_id]
   subnet_id              = module.vpc.private_subnets[0]
 
   tags = {
