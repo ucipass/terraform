@@ -40,7 +40,7 @@ module "ec2_cluster" {
   monitoring             = true
   vpc_security_group_ids = ["sg-12345678"]
   # subnet_id              = "subnet-eddcdzz4"
-  subnet_id              = vpc.private_subnets[0]
+  subnet_id              = module.vpc.private_subnets[0]
 
   tags = {
     Terraform   = "true"
