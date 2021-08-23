@@ -27,6 +27,32 @@ module "vpc" {
   }
 }
 
+module "vote_service_sg" {
+  depends_on = [module.vpc]
+  source = "terraform-aws-modules/security-group/aws"
+
+  name        = "AA_EC2_SG"
+  description = "Security group for user-service with custom ports open within VPC, and PostgreSQL publicly open"
+  vpc_id      = module.vpc.vpc_id
+
+  ingress_cidr_blocks      = ["10.0.0.0/16"]
+  ingress_rules            = ["https-443-tcp"]
+  ingress_with_cidr_blocks = [
+    {
+      from_port   = -1
+      to_port     = -1
+      protocol    = -1
+      description = "User-service ports"
+      cidr_blocks = "10.0.0.0/16"
+    },
+    {
+      rule        = "postgresql-tcp"
+      cidr_blocks = "0.0.0.0/0"
+    },
+  ]
+}
+
+
 module "ec2_cluster" {
   source                 = "terraform-aws-modules/ec2-instance/aws"
   version                = "~> 2.0"
@@ -38,7 +64,7 @@ module "ec2_cluster" {
   instance_type          = "t2.micro"
   key_name               = "user1"
   monitoring             = true
-  vpc_security_group_ids = ["sg-12345678"]
+  # vpc_security_group_ids = ["sg-12345678"]
   # subnet_id              = "subnet-eddcdzz4"
   subnet_id              = module.vpc.private_subnets[0]
 
@@ -48,30 +74,6 @@ module "ec2_cluster" {
   }
 }
 
-# module "vote_service_sg" {
-#   depends_on = [module.vpc]
-#   source = "terraform-aws-modules/security-group/aws"
-
-#   name        = "user-service2"
-#   description = "Security group for user-service with custom ports open within VPC, and PostgreSQL publicly open"
-#   vpc_id      = module.vpc.vpc_id
-
-#   ingress_cidr_blocks      = ["10.0.0.0/16"]
-#   ingress_rules            = ["https-443-tcp"]
-#   ingress_with_cidr_blocks = [
-#     {
-#       from_port   = -1
-#       to_port     = -1
-#       protocol    = -1
-#       description = "User-service ports"
-#       cidr_blocks = "10.0.0.0/16"
-#     },
-#     {
-#       rule        = "postgresql-tcp"
-#       cidr_blocks = "0.0.0.0/0"
-#     },
-#   ]
-# }
 
 
 module "records" {
