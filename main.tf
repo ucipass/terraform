@@ -62,9 +62,9 @@ module "ec2_cluster" {
 
   ami                    = "ami-0279406e0655775be" 
   instance_type          = "t2.micro"
-  key_name               = "user1"
+  key_name               = "AA"
   monitoring             = true
-  # vpc_security_group_ids = ["sg-12345678"]
+  # vpc_security_group_ids = [module.vote_service_sg.security_group_id]
   # subnet_id              = "subnet-eddcdzz4"
   subnet_id              = module.vpc.private_subnets[0]
 
