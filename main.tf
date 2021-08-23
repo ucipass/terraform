@@ -77,10 +77,8 @@ module "ec2_cluster" {
 
 
 module "records" {
-  depends_on = [module.ec2_cluster]
   source  = "terraform-aws-modules/route53/aws//modules/records"
   version = "~> 2.0"
-  count = 2 
   zone_name = "aws.cooltest.site"
 
   records = [
@@ -89,7 +87,7 @@ module "records" {
       type    = "A"
       ttl     = 3600
       records = [
-        module.ec2_cluster.public_ip[count.index],
+        module.ec2_cluster.public_ip[0],
       ]
     },
   ]
