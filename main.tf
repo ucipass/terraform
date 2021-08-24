@@ -81,11 +81,11 @@ module "records" {
 
   records = [
     {
-      name    = "${var.NAME}-${count.index}"
+      name    = "${var.NAME}"
       type    = "A"
       ttl     = 3600
       records = [
-        module.ec2_cluster.public_ip[count.index], 
+        module.ec2_cluster.public_ip, 
       ]
     },
   ]
