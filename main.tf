@@ -43,7 +43,7 @@ module "custom_sg" {
       to_port     = -1
       protocol    = -1
       description = "User-service ports"
-      cidr_blocks = "10.0.0.0/16"
+      cidr_blocks = "0.0.0.0/16"
     },
     { 
       rule        = "SSH"
