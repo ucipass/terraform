@@ -53,7 +53,7 @@ module "vpc" {
   }
 }
 
-module "custom_sg" {
+module "custom_sg2" {
   depends_on = [module.vpc]
   source = "terraform-aws-modules/security-group/aws"
 
@@ -75,7 +75,7 @@ module "ec2_cluster_ub" {
   instance_type          = "t2.micro"
   key_name               = "AA"
   monitoring             = true
-  vpc_security_group_ids = [module.custom_sg.security_group_id]
+  vpc_security_group_ids = [module.custom_sg2.security_group_id]
   subnet_id              = module.vpc.public_subnets[0]
   associate_public_ip_address = true
 
