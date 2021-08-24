@@ -90,7 +90,7 @@ module "ec2_cluster" {
   key_name               = "AA"
   monitoring             = true
   vpc_security_group_ids = [module.custom_sg.security_group_id]
-  subnet_id              = module.vpc.private_subnets[0]
+  subnet_id              = module.vpc.public_subnets[0]
   associate_public_ip_address = true
 
   tags = {  
