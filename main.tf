@@ -85,7 +85,7 @@ module "ec2_cluster" {
   name                   = var.NAME
   instance_count         = var.COUNT
 
-  ami                    = data.aws_ami.windows.id
+  ami                    = data.aws_ami.ubuntu.id
   instance_type          = "t2.micro"
   key_name               = "AA"
   monitoring             = true
