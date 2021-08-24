@@ -84,7 +84,7 @@ module "ec2_cluster" {
   subnet_id              = module.vpc.private_subnets[0]
   associate_public_ip_address = true
 
-  tags = {
+  tags = {  
     Terraform   = "true"
     Environment = "dev"
   }
