@@ -107,7 +107,7 @@ module "ec2_cluster_win" {
   instance_count         = var.COUNT
 
   ami                    = data.aws_ami.windows.id
-  instance_type          = "t2.micro"
+  instance_type          = "t2.medium"
   key_name               = "AA"
   monitoring             = true
   vpc_security_group_ids = [module.custom_sg.security_group_id]
