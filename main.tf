@@ -46,7 +46,7 @@ module "custom_sg" {
       cidr_blocks = "10.0.0.0/16"
     },
     {
-      rule        = "SSH"
+      rule        = "postgresql-tcp"
       cidr_blocks = "0.0.0.0/0"
     },
   ]
