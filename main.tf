@@ -45,8 +45,8 @@ module "custom_sg" {
       description = "User-service ports"
       cidr_blocks = "10.0.0.0/16"
     },
-    {
-      rule        = "postgresql-tcp"
+    { 
+      rule        = "SSH"
       cidr_blocks = "0.0.0.0/0"
     },
   ]
