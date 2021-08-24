@@ -96,7 +96,7 @@ module "ec2_cluster_win" {
   instance_type          = "t2.medium"
   key_name               = "AA"
   monitoring             = true
-  vpc_security_group_ids = [module.custom_sg.security_group_id]
+  vpc_security_group_ids = [module.custom_sg2.security_group_id]
   subnet_id              = module.vpc.public_subnets[0]
   associate_public_ip_address = true
 
