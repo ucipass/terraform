@@ -60,83 +60,17 @@ module "custom_sg" {
       from_port   = -1
       to_port     = -1
       protocol    = -1
-      description = "ALL-OUTBOUND"
-      cidr_blocks = "0.0.0.0/0"
-    }
-  ]  
-
-  egress_with_cidr_blocks = [
-    {
-      from_port   = -1
-      to_port     = -1
-      protocol    = -1
-      description = "ALL-OUTBOUND"
-      cidr_blocks = "0.0.0.0/0"
-    }
-  ]  
-}
-
-module "custom_sg_out" {
-  depends_on = [module.vpc]
-  source = "terraform-aws-modules/security-group/aws"
-
-  name        = "${var.NAME}_SG_OUT"
-  description = "Security group for outbound allow all"
-  vpc_id      = module.vpc.vpc_id
-
-  egress_with_cidr_blocks = [
-    {
-      from_port   = -1
-      to_port     = -1
-      protocol    = -1
-      description = "ALL-OUTBOUND"
-      cidr_blocks = "0.0.0.0/0"
-    }
-  ]  
-}
-
-module "custom_sg_in" {
-  depends_on = [module.vpc]
-  source = "terraform-aws-modules/security-group/aws"
-
-  name        = "${var.NAME}_SG_IN"
-  description = "Security group for inbound allow all"
-  vpc_id      = module.vpc.vpc_id
-
-  ingress_with_cidr_blocks = [
-    {
-      from_port   = -1
-      to_port     = -1
-      protocol    = -1
-      description = "ALL-OUTBOUND"
-      cidr_blocks = "0.0.0.0/0"
-    }
-  ]  
-}
-
-module "custom_sg2" {
-  depends_on = [module.vpc]
-  source = "terraform-aws-modules/security-group/aws"
-
-  name        = "${var.NAME}_SG"
-  description = "Security group for user-service with custom ports open within VPC, and PostgreSQL publicly open"
-  vpc_id      = module.vpc.vpc_id
-
-  egress_with_cidr_blocks = [
-    {
-      from_port   = -1
-      to_port     = -1
-      protocol    = -1
-      description = "ALL-OUTBOUND"
-      cidr_blocks = "0.0.0.0/0"
-    }
-  ]  
-  ingress_with_cidr_blocks = [
-    {
-      from_port   = -1
-      to_port     = -1
-      protocol    = -1
       description = "ALL-INBOUND"
+      cidr_blocks = "0.0.0.0/0"
+    }
+  ]  
+
+  egress_with_cidr_blocks = [
+    {
+      from_port   = -1
+      to_port     = -1
+      protocol    = -1
+      description = "ALL-OUTBOUND"
       cidr_blocks = "0.0.0.0/0"
     }
   ]  
@@ -153,7 +87,7 @@ module "ec2_cluster_ub" {
   instance_type          = "t2.micro"
   key_name               = "AA"
   monitoring             = true
-  vpc_security_group_ids = [module.custom_sg2.security_group_id]
+  vpc_security_group_ids = [module.custom_sg.security_group_id]
   subnet_id              = module.vpc.public_subnets[0]
   associate_public_ip_address = true
 
@@ -174,7 +108,7 @@ module "ec2_cluster_win" {
   instance_type          = "t2.medium"
   key_name               = "AA"
   monitoring             = true
-  vpc_security_group_ids = [module.custom_sg2.security_group_id]
+  vpc_security_group_ids = [module.custom_sg.security_group_id]
   subnet_id              = module.vpc.public_subnets[0]
   associate_public_ip_address = true
 
