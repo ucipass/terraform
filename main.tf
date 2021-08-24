@@ -74,7 +74,6 @@ module "ec2_cluster" {
 }
 
 module "records" { 
-  depends_on = [module.vpc.ec2_cluster]
   source  = "terraform-aws-modules/route53/aws//modules/records"
   version = "~> 2.0"
   count = var.COUNT
@@ -85,7 +84,9 @@ module "records" {
       name    = "${var.NAME}"
       type    = "A"
       ttl     = 3600
-      records = module.ec2_cluster.public_ip
+      records = [
+        module.ec2_cluster.public_ip[count.index], 
+      ]
     },
   ]
 }
