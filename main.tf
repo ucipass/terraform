@@ -11,7 +11,7 @@ provider "aws" {
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
 
-  name = var.VPC_NAME
+  name = var.NAME
   cidr = "10.0.0.0/16"
 
   azs             = ["us-east-2a", "us-east-2b", "us-east-2c"]
@@ -85,7 +85,7 @@ module "records" {
       type    = "A"
       ttl     = 3600
       records = [
-        module.ec2_cluster.public_ip[count.index],
+        module.ec2_cluster.public_ip, 
       ]
     },
   ]
