@@ -73,20 +73,20 @@ module "ec2_cluster" {
   }
 }
 
-module "records" {
-  source  = "terraform-aws-modules/route53/aws//modules/records"
-  version = "~> 2.0"
-  count = tonumber(var.COUNT)
-  zone_name = "aws.cooltest.site"
+# module "records" { 
+#   source  = "terraform-aws-modules/route53/aws//modules/records"
+#   version = "~> 2.0"
+#   count = tonumber(var.COUNT)
+#   zone_name = "aws.cooltest.site"
 
-  records = [
-    {
-      name    = "${var.NAME}tostring(${count.index})"
-      type    = "A"
-      ttl     = 3600
-      records = [
-        module.ec2_cluster.public_ip[count.index], 
-      ]
-    },
-  ]
-}
+#   records = [
+#     {
+#       name    = "${var.NAME}tostring(${count.index})"
+#       type    = "A"
+#       ttl     = 3600
+#       records = [
+#         module.ec2_cluster.public_ip[count.index], 
+#       ]
+#     },
+#   ]
+# }
