@@ -81,7 +81,7 @@ module "records" {
 
   records = [
     {
-      name    = "${var.NAME}${count.index}"
+      name    = "${var.NAME}tostring(${count.index})"
       type    = "A"
       ttl     = 3600
       records = [
