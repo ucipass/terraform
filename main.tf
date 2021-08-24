@@ -3,19 +3,15 @@ provider "aws" {
 }
 
 data "aws_ami" "ubuntu" {
-
   most_recent = true
-
   filter {
     name   = "name"
     values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
   }
-
   filter {
     name = "virtualization-type"
     values = ["hvm"]
   }
-
   owners = ["099720109477"]
 }
 
@@ -24,6 +20,19 @@ data "aws_ami" "ubuntu" {
 #   vpc_name = var.VPC_NAME
 #   vpc_cidr = var.VPC_CIDR
 # }
+
+data "aws_ami" "windows" {
+  most_recent = true     
+filter {
+    name   = "name"
+    values = ["Windows_Server-2019-English-Full-Base-*"]  
+  }     
+filter {
+    name   = "virtualization-type"
+    values = ["hvm"]  
+  }     
+owners = ["801119661308"] # Canonical
+}
 
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
@@ -76,7 +85,7 @@ module "ec2_cluster" {
   name                   = var.NAME
   instance_count         = var.COUNT
 
-  ami                    = data.aws_ami.ubuntu.id
+  ami                    = data.aws_ami.windows.id
   instance_type          = "t2.micro"
   key_name               = "AA"
   monitoring             = true
