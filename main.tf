@@ -80,11 +80,11 @@ module "records" {
   source  = "terraform-aws-modules/route53/aws//modules/records"
   version = "~> 2.0"
   count=2
-  zone_name = "host${count.index}.aws.cooltest.site"
+  zone_name = "aws.cooltest.site"
 
   records = [
     {
-      name    = ""
+      name    = "host${count.index}"
       type    = "A"
       ttl     = 3600
       records = [
