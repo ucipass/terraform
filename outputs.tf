@@ -7,5 +7,5 @@ output "vpc_full" {
 }
 
 output "ami_id_ubuntu" {
-  value = data.aws_ami.ubuntu
+  value = data.aws_ami.ubuntu.id
 }
