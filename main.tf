@@ -47,6 +47,35 @@ module "vpc" {
   }
 }
 
+module "custom_sg" {
+  depends_on = [module.vpc]
+  source = "terraform-aws-modules/security-group/aws"
+
+  name        = "${var.NAME}_SG_ALL"
+  description = "Security group for outbound allow all"
+  vpc_id      = module.vpc.vpc_id
+
+  ingress_with_cidr_blocks = [
+    {
+      from_port   = -1
+      to_port     = -1
+      protocol    = -1
+      description = "ALL-OUTBOUND"
+      cidr_blocks = "0.0.0.0/0"
+    }
+  ]  
+
+  egress_with_cidr_blocks = [
+    {
+      from_port   = -1
+      to_port     = -1
+      protocol    = -1
+      description = "ALL-OUTBOUND"
+      cidr_blocks = "0.0.0.0/0"
+    }
+  ]  
+}
+
 module "custom_sg_out" {
   depends_on = [module.vpc]
   source = "terraform-aws-modules/security-group/aws"
