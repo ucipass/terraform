@@ -78,7 +78,7 @@ module "custom_sg" {
   ]
 }
 
-module "ec2_cluster" {
+module "ec2_cluster_ub" {
   source                 = "terraform-aws-modules/ec2-instance/aws"
   version                = "~> 2.0"
 
@@ -99,7 +99,7 @@ module "ec2_cluster" {
   }
 }
 
-module "ec2_cluster" {
+module "ec2_cluster_win" {
   source                 = "terraform-aws-modules/ec2-instance/aws"
   version                = "~> 2.0"
 
