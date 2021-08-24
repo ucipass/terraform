@@ -8,6 +8,6 @@ variable "AWS_REGION" {
 }
 
 variable "COUNT" {
-  default= "1"
+  default= "2"
   type = string
 }
