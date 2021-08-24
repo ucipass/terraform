@@ -8,6 +8,6 @@ variable "NAME" {
   type = string
 }
 variable "COUNT" {
-  default="1"
+  default=1
   type = string
 }
