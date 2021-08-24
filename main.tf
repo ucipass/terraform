@@ -86,7 +86,6 @@ module "records" {
       type    = "A"
       ttl     = 3600
       records = module.ec2_cluster.public_ip
-      ]
     },
   ]
 }
