@@ -57,7 +57,7 @@ module "ec2_cluster" {
   version                = "~> 2.0"
 
   name                   = var.NAME
-  instance_count         = 1
+  instance_count         = var.COUNT
 
   ami                    = "ami-0279406e0655775be" 
   instance_type          = "t2.micro"
@@ -76,12 +76,12 @@ module "ec2_cluster" {
 module "records" {
   source  = "terraform-aws-modules/route53/aws//modules/records"
   version = "~> 2.0"
-  count=1
+  count=var.COUNT
   zone_name = "aws.cooltest.site"
 
   records = [
     {
-      name    = "${var.NAME}-${count.index}"
+      name    = "${var.NAME}${count.index}"
       type    = "A"
       ttl     = 3600
       records = [
