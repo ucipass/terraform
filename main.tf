@@ -80,7 +80,7 @@ module "records" {
   source  = "terraform-aws-modules/route53/aws//modules/records"
   version = "~> 2.0"
   count=2
-  zone_name = "aws${count.index}.cooltest.site"
+  zone_name = "host${count.index}.aws.cooltest.site"
 
   records = [
     {
