@@ -15,19 +15,13 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"]
 }
 
-# module "vpc1" {
-#   source = "./modules/vpc"
-#   vpc_name = var.VPC_NAME
-#   vpc_cidr = var.VPC_CIDR
-# }
-
 data "aws_ami" "windows" {
   most_recent = true     
-filter {
+  filter {
     name   = "name"
     values = ["Windows_Server-2019-English-Full-Base-*"]  
   }     
-filter {
+  filter {
     name   = "virtualization-type"
     values = ["hvm"]  
   }     
@@ -57,7 +51,7 @@ module "custom_sg_out" {
   depends_on = [module.vpc]
   source = "terraform-aws-modules/security-group/aws"
 
-  name        = "${var.NAME}_SG"
+  name        = "${var.NAME}_SG_OUT"
   description = "Security group for outbound allow all"
   vpc_id      = module.vpc.vpc_id
 
@@ -76,7 +70,7 @@ module "custom_sg_in" {
   depends_on = [module.vpc]
   source = "terraform-aws-modules/security-group/aws"
 
-  name        = "${var.NAME}_SG"
+  name        = "${var.NAME}_SG_IN"
   description = "Security group for inbound allow all"
   vpc_id      = module.vpc.vpc_id
 
@@ -178,4 +172,11 @@ module "ec2_cluster_win" {
 #       ]
 #     },
 #   ]
+# }
+
+
+# module "vpc1" {
+#   source = "./modules/vpc"
+#   vpc_name = var.VPC_NAME
+#   vpc_cidr = var.VPC_CIDR
 # }
