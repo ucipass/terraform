@@ -2,6 +2,23 @@ provider "aws" {
   region = var.AWS_REGION
 }
 
+data "aws_ami" "ubuntu" {
+
+  most_recent = true
+
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
+  }
+
+  filter {
+    name = "virtualization-type"
+    values = ["hvm"]
+  }
+
+  owners = ["099720109477"]
+}
+
 # module "vpc1" {
 #   source = "./modules/vpc"
 #   vpc_name = var.VPC_NAME
@@ -59,7 +76,7 @@ module "ec2_cluster" {
   name                   = var.NAME
   instance_count         = var.COUNT
 
-  ami                    = "ami-0279406e0655775be" 
+  ami                    = data.aws_ami.ubuntu
   instance_type          = "t2.micro"
   key_name               = "AA"
   monitoring             = true
