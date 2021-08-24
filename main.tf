@@ -31,7 +31,7 @@ module "custom_sg" {
   depends_on = [module.vpc]
   source = "terraform-aws-modules/security-group/aws"
 
-  name        = "AA_EC2_SG"
+  name        = "${var.NAME}_SG"
   description = "Security group for user-service with custom ports open within VPC, and PostgreSQL publicly open"
   vpc_id      = module.vpc.vpc_id
 
@@ -56,7 +56,7 @@ module "ec2_cluster" {
   source                 = "terraform-aws-modules/ec2-instance/aws"
   version                = "~> 2.0"
 
-  name                   = "host"
+  name                   = var.NAME
   instance_count         = 1
 
   ami                    = "ami-0279406e0655775be" 
@@ -81,7 +81,7 @@ module "records" {
 
   records = [
     {
-      name    = "host${count.index}"
+      name    = "${var.NAME}-${count.index}"
       type    = "A"
       ttl     = 3600
       records = [
