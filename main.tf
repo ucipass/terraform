@@ -61,13 +61,23 @@ module "custom_sg2" {
   description = "Security group for user-service with custom ports open within VPC, and PostgreSQL publicly open"
   vpc_id      = module.vpc.vpc_id
 
+  egress_cidr_blocks = ["0.0.0.0/0"]
+  egress_with_cidr_blocks = [
+    {
+      from_port   = -1
+      to_port     = -1
+      protocol    = -1
+      description = "ALL-OUTBOUND"
+      cidr_blocks = "0.0.0.0/0"
+    }
+  ]  
   ingress_cidr_blocks = ["0.0.0.0/0"]
   ingress_with_cidr_blocks = [
     {
-      from_port   = 8080
-      to_port     = 8090
-      protocol    = "tcp"
-      description = "User-service ports"
+      from_port   = -1
+      to_port     = -1
+      protocol    = -1
+      description = "ALL-INBOUND"
       cidr_blocks = "0.0.0.0/0"
     }
   ]  
