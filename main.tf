@@ -57,7 +57,7 @@ module "ec2_cluster" {
   version                = "~> 2.0"
 
   name                   = var.NAME
-  instance_count         = tonumber(var.COUNT)
+  instance_count         = var.COUNT
 
   ami                    = "ami-0279406e0655775be" 
   instance_type          = "t2.micro"
