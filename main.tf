@@ -74,7 +74,7 @@ module "custom_sg_in" {
   description = "Security group for inbound allow all"
   vpc_id      = module.vpc.vpc_id
 
-  igress_with_cidr_blocks = [
+  ingress_with_cidr_blocks = [
     {
       from_port   = -1
       to_port     = -1
